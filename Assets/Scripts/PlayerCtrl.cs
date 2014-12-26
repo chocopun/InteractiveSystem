@@ -11,6 +11,8 @@ public class PlayerCtrl : MonoBehaviour {
 	GameObject enemyAttackTarget;
 	GameObject enemyBase;
 	EnemyCtrl enemyCtrl;
+	private GameObject nearbyObj;
+	private float targetUpdateTime = 0;
 	
 	// ステートの種類.
 	enum State {
@@ -30,6 +32,7 @@ public class PlayerCtrl : MonoBehaviour {
 		inputManager = FindObjectOfType<InputManager>();
 		enemyBase = GameObject.Find("EnemyBase");
 		enemyCtrl = GetComponent<EnemyCtrl>();
+		nearbyObj = GetNearbyObj(gameObject, "Enemy");
 	}
 	
 	// Update is called once per frame
@@ -58,6 +61,15 @@ public class PlayerCtrl : MonoBehaviour {
 				break;
 			}
 		}
+
+		targetUpdateTime += Time.deltaTime;
+		if (targetUpdateTime >= 1.0f) {
+		nearbyObj = GetNearbyObj(gameObject, "Enemy");
+		if(nearbyObj)
+			attackTarget = nearbyObj.transform;
+		targetUpdateTime = 0;
+		}
+		Debug.Log(attackTarget);
 	}
 	
 	
@@ -75,7 +87,6 @@ public class PlayerCtrl : MonoBehaviour {
 	void Walking()
 	{
 		if (attackTarget) {
-			Debug.Log(attackTarget);
 			Vector3 hitPoint = attackTarget.position;
 			hitPoint.y = transform.position.y;
 			float distance = Vector3.Distance(hitPoint,transform.position);
@@ -140,5 +151,22 @@ public class PlayerCtrl : MonoBehaviour {
     public void SetAttackTarget(Transform target)
     {
         attackTarget = target;
+    }
+
+    GameObject GetNearbyObj(GameObject nowObj, string tagName){
+        float tmpDis = 0;           //距離用一時変数
+        float nearDis = 0;          //最も近いオブジェクトの距離
+        GameObject targetObj = null;
+        foreach (GameObject obs in  GameObject.FindGameObjectsWithTag(tagName)){
+        	tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
+            //オブジェクトの距離が近いか、距離0であればオブジェクト名を取得
+            //一時変数に距離を格納
+            if (nearDis == 0 || nearDis > tmpDis){
+                nearDis = tmpDis;
+                targetObj = obs;
+            }
+        }
+        //最も近かったオブジェクトを返す
+        return targetObj;
     }
 }
