@@ -16,7 +16,6 @@ public class EnemyCtrl : MonoBehaviour {
     // ステートの種類.
     enum State {
         Walking,	// 探索
-        Chasing,	// 追跡
         Attacking,	// 攻撃
         Died,       // 死亡
     };

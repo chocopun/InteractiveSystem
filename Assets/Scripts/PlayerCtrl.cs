@@ -5,11 +5,9 @@ public class PlayerCtrl : MonoBehaviour {
 	CharacterStatus status;
 	CharaAnimation charaAnimation;
 	Transform attackTarget;
-	InputManager inputManager;
 	public float attackRange = 1.5f;
 	GameObject enemyAttackTarget;
 	GameObject enemyBase;
-	EnemyCtrl enemyCtrl;
 	private GameObject nearbyObj;
 	private float targetUpdateTime = 0;
 	
@@ -28,9 +26,7 @@ public class PlayerCtrl : MonoBehaviour {
 	void Start () {
 		status = GetComponent<CharacterStatus>();
 		charaAnimation = GetComponent<CharaAnimation>();
-		inputManager = FindObjectOfType<InputManager>();
 		enemyBase = GameObject.Find("EnemyBase");
-		enemyCtrl = GetComponent<EnemyCtrl>();
 		nearbyObj = GetNearbyObj(gameObject, "Enemy");
 	}
 	
@@ -68,7 +64,6 @@ public class PlayerCtrl : MonoBehaviour {
 			attackTarget = nearbyObj.transform;
 		targetUpdateTime = 0;
 		}
-		Debug.Log(attackTarget);
 	}
 	
 	
@@ -89,14 +84,19 @@ public class PlayerCtrl : MonoBehaviour {
 			Vector3 hitPoint = attackTarget.position;
 			hitPoint.y = transform.position.y;
 			float distance = Vector3.Distance(hitPoint,transform.position);
-			Debug.Log(distance);
 			if (distance < attackRange) {
 				ChangeState(State.Attacking);
 			} else {
 				SendMessage("SetDestination",attackTarget.position);
 			}
 		} else {
-			SendMessage("SetDestination", enemyBase.transform.position);
+			float baseDistance = Vector3.Distance(enemyBase.transform.position, transform.position);
+			if (baseDistance < attackRange) {
+				attackTarget = enemyBase.transform;
+				ChangeState(State.Attacking);
+			} else {
+				SendMessage("SetDestination", enemyBase.transform.position);
+			}
 		}
 	}
 	
@@ -123,11 +123,7 @@ public class PlayerCtrl : MonoBehaviour {
 	
 	void Died()
 	{
-		status.died = true;/*
-		if(SpawnManager.existPlayers == null){
-			enemyCtrl.SendMessage("SetAttackTarget", null);
-		}
-		enemyCtrl.SendMessage("SetAttackTarget", SpawnManager.existPlayers[0].transform);*/
+		status.died = true;
 		Destroy(gameObject);
 	}
 	

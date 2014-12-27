@@ -37,7 +37,7 @@ public class AttackArea : MonoBehaviour {
 	void OnTriggerEnter(Collider other)
 	{
 		// 攻撃が当たった相手のDamageメッセージをおくる.
-		if(other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Player"))
+		if(other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Base"))
 		other.SendMessage("Damage",GetAttackInfo());
 		// 攻撃した対象を保存.
 		status.lastAttackTarget = other.transform.root.gameObject;
