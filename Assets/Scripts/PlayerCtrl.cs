@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class PlayerCtrl : MonoBehaviour {
-	const float RayCastMaxDistance = 100.0f;
 	CharacterStatus status;
 	CharaAnimation charaAnimation;
 	Transform attackTarget;
@@ -124,11 +123,12 @@ public class PlayerCtrl : MonoBehaviour {
 	
 	void Died()
 	{
-		status.died = true;
+		status.died = true;/*
 		if(SpawnManager.existPlayers == null){
 			enemyCtrl.SendMessage("SetAttackTarget", null);
 		}
-			enemyCtrl.SendMessage("SetAttackTarget", SpawnManager.existPlayers[0].transform);
+		enemyCtrl.SendMessage("SetAttackTarget", SpawnManager.existPlayers[0].transform);*/
+		Destroy(gameObject);
 	}
 	
 	void Damage(AttackArea.AttackInfo attackInfo)
