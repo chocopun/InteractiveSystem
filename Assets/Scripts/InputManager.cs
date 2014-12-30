@@ -17,11 +17,11 @@ public class InputManager : MonoBehaviour {
 //		if (Input.GetKeyDown("c"))
 //			spawnManager.SendMessage("SpawnPlayer");
 
-		if (Input.GetKeyDown("w"))
-			spawnManager.SendMessage("SpawnWarg");
+//		if (Input.GetKeyDown("w"))
+//			spawnManager.SendMessage("SpawnWarg");
 
-		if (Input.GetKeyDown("d"))
-			spawnManager.SendMessage("SpawnDragon");
+//		if (Input.GetKeyDown("d"))
+//			spawnManager.SendMessage("SpawnDragon");
 
 		// スライド開始地点.
 		if (Input.GetButtonDown("Fire1"))

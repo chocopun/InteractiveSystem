@@ -117,11 +117,13 @@ public class MonoSQLiteConnect : MonoBehaviour {
 
 	public void OkButtonClick() {
 		CheckWord();
+		inputField.text = "";
 	}
 
 	public void PassButtonClick() {
 		UpdateWord();
 		spawnManager.SendMessage("SpawnWarg");
+		inputField.text = "";
 	}
 
 	#region ExecuteSQL:SQLé¿çs

@@ -85,7 +85,13 @@ public class EnemyCtrl : MonoBehaviour {
                 SendMessage("SetDestination",attackTarget.position);
             }
         } else {
-            SendMessage("SetDestination", playerBase.transform.position);
+            float baseDistance = Vector3.Distance(playerBase.transform.position, transform.position);
+            if (baseDistance < attackRange) {
+                attackTarget = playerBase.transform;
+                ChangeState(State.Attacking);
+            } else {
+                SendMessage("SetDestination", playerBase.transform.position);
+            }
         }
     }
 
