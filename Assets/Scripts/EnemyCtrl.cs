@@ -79,7 +79,6 @@ public class EnemyCtrl : MonoBehaviour {
             Vector3 hitPoint = attackTarget.position;
             hitPoint.y = transform.position.y;
             float distance = Vector3.Distance(hitPoint,transform.position);
-            Debug.Log(distance);
             if (distance < attackRange) {
                 ChangeState(State.Attacking);
             } else {

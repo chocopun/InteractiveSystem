@@ -14,8 +14,8 @@ public class InputManager : MonoBehaviour {
 	
 	void Update()
 	{
-		if (Input.GetKeyDown("c"))
-			spawnManager.SendMessage("SpawnPlayer");
+//		if (Input.GetKeyDown("c"))
+//			spawnManager.SendMessage("SpawnPlayer");
 
 		if (Input.GetKeyDown("w"))
 			spawnManager.SendMessage("SpawnWarg");

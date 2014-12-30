@@ -14,7 +14,6 @@ public class BaseCtrl : MonoBehaviour {
 
     void Damage(AttackArea.AttackInfo attackInfo){
         hp -= attackInfo.attackPower;
-        Debug.Log(hp);
         if (hp <= 0) {
             hp = 0;
             gameManager.SendMessage("EndGame");
