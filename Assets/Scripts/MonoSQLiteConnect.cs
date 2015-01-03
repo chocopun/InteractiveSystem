@@ -124,15 +124,6 @@ public class MonoSQLiteConnect : MonoBehaviour {
 		}
 	}
 
-	void UpdateHardWord() {
-		result = ExecuteSQL("SELECT * FROM WORD ORDER BY RANDOM() LIMIT 1;");
-		while(result.Read()) {
-			hardText.text = result.GetString(1);
-			spell = result.GetString(2);
-		}
-		question = true;
-	}
-
 	void UpdateEasyWord() {
 		result = ExecuteSQL("SELECT * FROM WORD ORDER BY RANDOM() LIMIT 4;");
 		int i = 0;
@@ -154,12 +145,22 @@ public class MonoSQLiteConnect : MonoBehaviour {
 			enWords[n] = enTmp;
 		}
 		int randomInt = Random.Range (0, n);
+		Debug.Log(randomInt);
 		easyJaText.text = jaWords[randomInt];
 		easyText1.text = enWords[0];
 		easyText2.text = enWords[1];
 		easyText3.text = enWords[2];
 		easyText4.text = enWords[3];
 
+		question = true;
+	}
+
+	void UpdateHardWord() {
+		result = ExecuteSQL("SELECT * FROM WORD ORDER BY RANDOM() LIMIT 1;");
+		while(result.Read()) {
+			hardText.text = result.GetString(1);
+			spell = result.GetString(2);
+		}
 		question = true;
 	}
 
@@ -213,7 +214,7 @@ public class MonoSQLiteConnect : MonoBehaviour {
 	}
 
 	public void PassButtonClick() {
-		UpdateEasyWord();
+		UpdateHardWord();
 		spawnManager.SendMessage("SpawnWarg");
 		inputField.text = "";
 	}
