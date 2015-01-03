@@ -145,7 +145,6 @@ public class MonoSQLiteConnect : MonoBehaviour {
 			enWords[n] = enTmp;
 		}
 		int randomInt = Random.Range (0, 4);
-		Debug.Log(randomInt);
 		easyJaText.text = jaWords[randomInt];
 		easyText1.text = enWords[0];
 		easyText2.text = enWords[1];
@@ -168,7 +167,6 @@ public class MonoSQLiteConnect : MonoBehaviour {
 		if(inputField.text == spell){
 			spawnManager.SendMessage("SpawnPlayer");
 			question = false;
-			inputField.text = "";
 		}
 	}
 
