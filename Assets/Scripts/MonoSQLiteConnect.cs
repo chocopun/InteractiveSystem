@@ -45,15 +45,32 @@ public class MonoSQLiteConnect : MonoBehaviour {
 		get { return con != null; }
 	}
 
-	public Text text;
+	public Text hardText;
+	public Text easyJaText;
+	public Text easyText1;
+	public Text easyText2;
+	public Text easyText3;
+	public Text easyText4;
 	public InputField inputField;
 	SqliteDataReader result;
 	public bool question = false;
+	public bool answer = false;
+	public bool collect = false;
 	public string spell;
 	public GameObject spawnManager;
+	public GameObject easyCanvas;
+	public GameObject hardCanvas;
+	string[] jaWords = new string[4];
+	string[] enWords = new string[4];
+	System.Random rng = new System.Random();
 	#endregion
 
 	void Awake () {
+		if(ModeSelect.mode == "easy"){
+			hardCanvas.SetActive(false);
+		}else if(ModeSelect.mode == "hard") {
+			easyCanvas.SetActive(false);
+		}
 		spawnManager = GameObject.Find("SpawnManager");
 	}
 	#region Start
@@ -87,26 +104,62 @@ public class MonoSQLiteConnect : MonoBehaviour {
 	#endregion
 
 	void Update() {
-		if (!question) {
-			UpdateWord();
-		}else{
-			if(Input.GetKeyDown("return")){
-				OkButtonClick();
+		if(ModeSelect.mode == "easy"){
+			if (!question) {
+				UpdateEasyWord();
 			}
-			if(Input.GetKeyDown("space")){
-				PassButtonClick();
+		}else if(ModeSelect.mode == "hard"){
+			if (!question) {
+				UpdateHardWord();
+			}else{
+				if(Input.GetKeyDown("return")){
+					OkButtonClick();
+				}
+				if(Input.GetKeyDown("space")){
+					PassButtonClick();
+				}
 			}
+			EventSystem.current.SetSelectedGameObject(inputField.gameObject, null);
+			inputField.OnPointerClick(new PointerEventData(EventSystem.current));
 		}
-		EventSystem.current.SetSelectedGameObject(inputField.gameObject, null);
-		inputField.OnPointerClick(new PointerEventData(EventSystem.current));
 	}
 
-	void UpdateWord() {
+	void UpdateHardWord() {
 		result = ExecuteSQL("SELECT * FROM WORD ORDER BY RANDOM() LIMIT 1;");
 		while(result.Read()) {
-			text.text = result.GetString(1);
+			hardText.text = result.GetString(1);
 			spell = result.GetString(2);
 		}
+		question = true;
+	}
+
+	void UpdateEasyWord() {
+		result = ExecuteSQL("SELECT * FROM WORD ORDER BY RANDOM() LIMIT 4;");
+		int i = 0;
+		while(result.Read()) {
+			jaWords[i] = result.GetString(1);
+			enWords[i] = result.GetString(2);
+			i++;
+		}
+		int n = jaWords.Length;
+		while (n > 1)
+		{
+			n--;
+			int k = rng.Next(n + 1);
+			string jaTmp = jaWords[k];
+			string enTmp = enWords[k];
+			jaWords[k] = jaWords[n];
+			enWords[k] = enWords[n];
+			jaWords[n] = jaTmp;
+			enWords[n] = enTmp;
+		}
+		int randomInt = Random.Range (0, n);
+		easyJaText.text = jaWords[randomInt];
+		easyText1.text = enWords[0];
+		easyText2.text = enWords[1];
+		easyText3.text = enWords[2];
+		easyText4.text = enWords[3];
+
 		question = true;
 	}
 
@@ -118,13 +171,49 @@ public class MonoSQLiteConnect : MonoBehaviour {
 		}
 	}
 
+	public void CheckSelectWord1() {
+		if(easyJaText.text == jaWords[0]){
+			spawnManager.SendMessage("SpawnPlayer");
+			question = false;
+		}else{
+			spawnManager.SendMessage("SpawnWarg");
+		}
+	}
+
+	public void CheckSelectWord2() {
+		if(easyJaText.text == jaWords[1]){
+			spawnManager.SendMessage("SpawnPlayer");
+			question = false;
+		}else{
+			spawnManager.SendMessage("SpawnWarg");
+		}
+	}
+
+	public void CheckSelectWord3() {
+		if(easyJaText.text == jaWords[2]){
+			spawnManager.SendMessage("SpawnPlayer");
+			question = false;
+		}else{
+			spawnManager.SendMessage("SpawnWarg");
+		}
+	}
+
+	public void CheckSelectWord4() {
+		if(easyJaText.text == jaWords[3]){
+			spawnManager.SendMessage("SpawnPlayer");
+			question = false;
+		}else{
+			spawnManager.SendMessage("SpawnWarg");
+		}
+	}
+
 	public void OkButtonClick() {
 		CheckWord();
 		inputField.text = "";
 	}
 
 	public void PassButtonClick() {
-		UpdateWord();
+		UpdateEasyWord();
 		spawnManager.SendMessage("SpawnWarg");
 		inputField.text = "";
 	}
