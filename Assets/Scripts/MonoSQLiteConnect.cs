@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.IO;
 using System.Collections;
 using Mono.Data.Sqlite;
+using UnityEngine.EventSystems;
 
 public class MonoSQLiteConnect : MonoBehaviour {
 
@@ -96,6 +97,8 @@ public class MonoSQLiteConnect : MonoBehaviour {
 				PassButtonClick();
 			}
 		}
+		EventSystem.current.SetSelectedGameObject(inputField.gameObject, null);
+		inputField.OnPointerClick(new PointerEventData(EventSystem.current));
 	}
 
 	void UpdateWord() {
