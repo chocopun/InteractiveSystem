@@ -144,7 +144,7 @@ public class MonoSQLiteConnect : MonoBehaviour {
 			jaWords[n] = jaTmp;
 			enWords[n] = enTmp;
 		}
-		int randomInt = Random.Range (0, n);
+		int randomInt = Random.Range (0, 4);
 		Debug.Log(randomInt);
 		easyJaText.text = jaWords[randomInt];
 		easyText1.text = enWords[0];
