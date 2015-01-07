@@ -7,37 +7,37 @@ using UnityEngine.EventSystems;
 
 public class MonoSQLiteConnect : MonoBehaviour {
 
-	#region •Ï”
+	#region å¤‰æ•°
 	/// <summary>
-	/// ƒf[ƒ^ƒx[ƒXƒtƒ@ƒCƒ‹–¼
+	/// ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«å
 	/// </summary>
 	public string FileName = "GameData.db";
 
 	/// <summary>
-	/// start‚Å©“®“I‚ÉÚ‘±‚·‚é‚È‚çtrue
+	/// startã§è‡ªå‹•çš„ã«æ¥ç¶šã™ã‚‹ãªã‚‰true
 	/// </summary>
 	public bool AutoConnect = true;
 
 	/// <summary>
-	/// true‚É‚·‚é‚ÆpersistentDataPath‚©‚çdbƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‘‚«‚·‚é
-	/// windows‚Ìê‡AêŠ‚Í«‚±‚±‚É‚È‚é
+	/// trueã«ã™ã‚‹ã¨persistentDataPathã‹ã‚‰dbãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿æ›¸ãã™ã‚‹
+	/// windowsã®å ´åˆã€å ´æ‰€ã¯â†“ã“ã“ã«ãªã‚‹
 	/// C:/Users/(UserName)/AppData/LocalLow/(UserName2)/(ProjectName)
-	/// 
-	/// false‚Ìê‡‚ÍReadOnly‚Å“¯ƒfƒBƒŒƒNƒgƒŠ‚©‚ç“Ç‚İ‚Ş
+	///
+	/// falseã®å ´åˆã¯ReadOnlyã§åŒãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ã‚‰èª­ã¿è¾¼ã‚€
 	/// </summary>
 	public bool PersistentDataPath = false;
 
 	/// <summary>
-	/// SQLiteˆÃ†‰»ƒpƒXƒ[ƒh
-	/// ‚½‚¾‚µAƒpƒXƒ[ƒhİ’è‚µ‚½ê‡‚Ì“®ì‚Í–¢Šm”F
-	/// ‹ó•¶š—ñ‚È‚çƒpƒXƒ[ƒh‚ğg—p‚µ‚È‚¢
+	/// SQLiteæš—å·åŒ–ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+	/// ãŸã ã—ã€ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰è¨­å®šã—ãŸå ´åˆã®å‹•ä½œã¯æœªç¢ºèª
+	/// ç©ºæ–‡å­—åˆ—ãªã‚‰ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ä½¿ç”¨ã—ãªã„
 	/// </summary>
 	public string Password = "";
 
 	SqliteConnection con;
 
 	/// <summary>
-	/// Ú‘±‚µ‚Ä‚¢‚½‚çtrue
+	/// æ¥ç¶šã—ã¦ã„ãŸã‚‰true
 	/// </summary>
 	[HideInInspector]
 	public bool Connected
@@ -68,7 +68,7 @@ public class MonoSQLiteConnect : MonoBehaviour {
 	void Awake () {
 		if(ModeSelect.mode == "easy"){
 			hardCanvas.SetActive(false);
-		}else if(ModeSelect.mode == "hard") {
+		} else if(ModeSelect.mode == "hard") {
 			easyCanvas.SetActive(false);
 		}
 		spawnManager = GameObject.Find("SpawnManager");
@@ -92,11 +92,11 @@ public class MonoSQLiteConnect : MonoBehaviour {
 			//{
 			//    conString += "Password=" + Password + ";";
 			//}
-			// Œq‚¢‚Å‚İ‚é
+			// ç¹‹ã„ã§ã¿ã‚‹
 			con = new SqliteConnection(conString);
 			con.SetPassword(Password);
-			
-			// DB‚ÉÚ‘±
+
+			// DBã«æ¥ç¶š
 			con.Open();
 		}
 		AutoConnect = true;
@@ -217,27 +217,27 @@ public class MonoSQLiteConnect : MonoBehaviour {
 		inputField.text = "";
 	}
 
-	#region ExecuteSQL:SQLÀs
+	#region ExecuteSQL:SQLå®Ÿè¡Œ
 	/// <summary>
-	/// ”CˆÓ‚ÌSQL‚ğÀs‚µ‚Ü‚·
-	/// SELECT•¶‚µ‚©“®ìŠm”F‚µ‚Ä‚È‚¢
+	/// ä»»æ„ã®SQLã‚’å®Ÿè¡Œã—ã¾ã™
+	/// SELECTæ–‡ã—ã‹å‹•ä½œç¢ºèªã—ã¦ãªã„
 	/// </summary>
-	/// <param name="SQL">SQL•¶</param>
-	/// <returns>Œ‹‰ÊƒŒƒR[ƒhŒQ</returns>
+	/// <param name="SQL">SQLæ–‡</param>
+	/// <returns>çµæœãƒ¬ã‚³ãƒ¼ãƒ‰ç¾¤</returns>
 	public SqliteDataReader ExecuteSQL(string SQL)
 	{
-		// SQLƒRƒ}ƒ“ƒhƒIƒuƒWƒFƒNƒg‚Ìì¬
+		// SQLã‚³ãƒãƒ³ãƒ‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆ
 		var cmd = new SqliteCommand(SQL, con);
-		
-		// SQLÀs
+
+		// SQLå®Ÿè¡Œ
 		var result = cmd.ExecuteReader();
 		return result;
 	}
 	#endregion
 
-	#region Connect:ÄÚ‘±
+	#region Connect:å†æ¥ç¶š
 	/// <summary>
-	/// ÄÚ‘±
+	/// å†æ¥ç¶š
 	/// </summary>
 	public void Connect()
 	{
@@ -245,9 +245,9 @@ public class MonoSQLiteConnect : MonoBehaviour {
 	}
 	#endregion
 
-	#region Close:Ø’f
+	#region Close:åˆ‡æ–­
 	/// <summary>
-	/// DBØ’f
+	/// DBåˆ‡æ–­
 	/// </summary>
 	public void Close()
 	{

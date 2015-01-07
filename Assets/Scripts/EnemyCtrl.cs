@@ -5,13 +5,11 @@ public class EnemyCtrl : MonoBehaviour {
     CharacterStatus status;
     CharaAnimation charaAnimation;
     Transform attackTarget;
-    // 移動範囲５メートル
-    public float walkRange = 5.0f;
-    // 初期位置を保存しておく変数
-    public Vector3 basePosition;
-    public float attackRange = 1.5f;
+    public float attackRange = 2.0f;
     GameObject playerBase;
     PlayerCtrl playerCtrl;
+    private float targetUpdateTime = 0;
+    private GameObject nearbyObj;
 
     // ステートの種類.
     enum State {
@@ -28,9 +26,8 @@ public class EnemyCtrl : MonoBehaviour {
     void Start () {
         status = GetComponent<CharacterStatus>();
         charaAnimation = GetComponent<CharaAnimation>();
-        // 初期位置を保持
-        basePosition = transform.position;
         playerBase = GameObject.Find("PlayerBase");
+        nearbyObj = GetNearbyObj(gameObject, "Player");
     }
 
     // Update is called once per frame
@@ -59,6 +56,14 @@ public class EnemyCtrl : MonoBehaviour {
                 break;
             }
         }
+
+        targetUpdateTime += Time.deltaTime;
+        if (targetUpdateTime >= 1.0f) {
+            nearbyObj = GetNearbyObj(gameObject, "Player");
+            if(nearbyObj)
+                attackTarget = nearbyObj.transform;
+            targetUpdateTime = 0;
+        }
     }
 
 
@@ -67,7 +72,7 @@ public class EnemyCtrl : MonoBehaviour {
 	{
 		this.nextState = nextState;
 	}
-	
+
 	void WalkStart()
 	{
 		StateStartCommon();
@@ -100,22 +105,20 @@ public class EnemyCtrl : MonoBehaviour {
 	{
 		StateStartCommon();
 		status.attacking = true;
-		
+
 		// 敵の方向に振り向かせる.
 		Vector3 targetDirection = (attackTarget.position-transform.position).normalized;
 		SendMessage("SetDirection",targetDirection);
-		
+
 		// 移動を止める.
 		SendMessage("StopMove");
 	}
-	
+
 	// 攻撃中の処理.
 	void Attacking()
 	{
 		if (charaAnimation.IsAttacked())
-     ChangeState(State.Walking);
-        // ターゲットをリセットする
-        attackTarget = null;
+            ChangeState(State.Walking);
     }
 
     void Died()
@@ -144,5 +147,22 @@ public class EnemyCtrl : MonoBehaviour {
     public void SetAttackTarget(Transform target)
     {
         attackTarget = target;
+    }
+
+    GameObject GetNearbyObj(GameObject nowObj, string tagName){
+        float tmpDis = 0;           //距離用一時変数
+        float nearDis = 0;          //最も近いオブジェクトの距離
+        GameObject targetObj = null;
+        foreach (GameObject obs in  GameObject.FindGameObjectsWithTag(tagName)){
+            tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
+            //オブジェクトの距離が近いか、距離0であればオブジェクト名を取得
+            //一時変数に距離を格納
+            if (nearDis == 0 || nearDis > tmpDis){
+                nearDis = tmpDis;
+                targetObj = obs;
+            }
+        }
+        //最も近かったオブジェクトを返す
+        return targetObj;
     }
 }

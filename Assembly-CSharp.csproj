@@ -63,7 +63,6 @@
      <Compile Include="Assets\Scripts\MonoSQLiteConnect.cs" />
      <Compile Include="Assets\Scripts\PlayerCtrl.cs" />
      <Compile Include="Assets\Scripts\PlayerMove.cs" />
-     <Compile Include="Assets\Scripts\SearchArea.cs" />
      <Compile Include="Assets\Scripts\SpawnManager.cs" />
      <None Include="Assets\San Francisco House\readme.txt" />
  <Reference Include="UnityEngine.UI">
